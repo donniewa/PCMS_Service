@@ -75,4 +75,36 @@ class PCMS_Service_Pcms_Model_Rest extends PCMS_Service_Pcms_Model_Abstract
         return($this->getData('searchTag', $strTag, $strFormatType, array('{tag}' => $strTag)));
     }
 
+    /**
+     * Returns a list of elements that match the given uuid
+     * @param string $strObjectUuid
+     * @param string $strFormatType
+     * @return Object
+     * @author donniewa
+     */
+    public function getObjectById($strObjectUuid, $strFormatType = 'xml')
+    {
+        return(
+            $this->getData(
+            	'getObjectByModelName', $strObjectUuid, $strFormatType, array('{objectid}' => $strObjectUuid)
+            )
+        );
+    }
+
+    /**
+     * Returns a list of elements that match the given modelname
+     * @param string $strModelName
+     * @param string $strFormatType
+     * @return Object
+     * @author donniewa
+     */
+    public function getObjectByModelName($strModelName, $strFormatType = 'xml')
+    {
+        return(
+            $this->getData(
+            	'getObjectByModelName', $strModelName, $strFormatType, array('{modelname}' => $strModelName)
+            )
+        );
+    }
+
 }
