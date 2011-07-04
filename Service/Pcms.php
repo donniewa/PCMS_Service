@@ -44,7 +44,7 @@ class PCMS_Service_Pcms
 
         if ($cacheModelObj) {
             $this->_model->setCache($cacheModelObj);
-    }
+        }
     }
 
     /**

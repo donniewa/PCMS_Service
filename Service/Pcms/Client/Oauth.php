@@ -60,8 +60,8 @@ class PCMS_Service_Pcms_Client_Oauth extends PCMS_Service_Pcms_Client_Abstract
                 if ($objToken instanceof Zend_Oauth_Token_Access) {
                     $client = $objToken->getHttpClient($listClientConfig);
                     return($client);
+                }
             }
-        }
         }
 
         /**
@@ -87,7 +87,7 @@ class PCMS_Service_Pcms_Client_Oauth extends PCMS_Service_Pcms_Client_Abstract
         if ($this->_cache) {
             $this->_cache->save(null, 'personalcms_access_token');
             $this->_cache->save(null, 'personalcms_request_token');
-    }
+        }
     }
 
     /**
@@ -111,7 +111,7 @@ class PCMS_Service_Pcms_Client_Oauth extends PCMS_Service_Pcms_Client_Abstract
         if ($this->_cache) {
             if ($this->_cache->load('personalcms_access_token')) {
                 $objToken   =   $this->_cache->load('personalcms_access_token');
-        }
+            }
         }
 
         if ($bPassBackOnError === false && $objToken instanceof Zend_Oauth_Token) {
@@ -149,7 +149,7 @@ class PCMS_Service_Pcms_Client_Oauth extends PCMS_Service_Pcms_Client_Abstract
              * Using the ocml cache here, any cache protocol can be substituted.
              */
                 $objToken   =   $this->_cache->load('personalcms_request_token');
-        }
+            }
         }
 
         if ($bPassBackOnError === false && $objToken instanceof Zend_Oauth_Token) {

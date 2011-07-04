@@ -87,7 +87,7 @@ abstract class PCMS_Service_Pcms_Model_Abstract implements PCMS_Service_Pcms_Mod
         $methodName    =    '_reply' . strtoupper($format);
         if (method_exists($this, $methodName) === false) {
             throw new DomainException('Format not valid. ('.$format.')');
-    }
+        }
         return($this->$methodName($result));
     }
 

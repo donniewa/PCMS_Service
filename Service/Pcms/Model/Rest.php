@@ -86,7 +86,7 @@ class PCMS_Service_Pcms_Model_Rest extends PCMS_Service_Pcms_Model_Abstract
     {
         return(
             $this->getData(
-            	'getObjectByModelName', $strObjectUuid, $strFormatType, array('{objectid}' => $strObjectUuid)
+                'getObjectByModelName', $strObjectUuid, $strFormatType, array('{objectid}' => $strObjectUuid)
             )
         );
     }
@@ -102,7 +102,7 @@ class PCMS_Service_Pcms_Model_Rest extends PCMS_Service_Pcms_Model_Abstract
     {
         return(
             $this->getData(
-            	'getObjectByModelName', $strModelName, $strFormatType, array('{modelname}' => $strModelName)
+                'getObjectByModelName', $strModelName, $strFormatType, array('{modelname}' => $strModelName)
             )
         );
     }
