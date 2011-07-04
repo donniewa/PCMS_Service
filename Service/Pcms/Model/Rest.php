@@ -13,11 +13,40 @@
  **************************************************/
 
 /**
- * 
+ *
  * @author donniewa
  */
-class Ocml_Service_Pcms_Model_Rest extends Ocml_Service_Pcms_Model_Abstract 
+class Ocml_Service_Pcms_Model_Rest extends Ocml_Service_Pcms_Model_Abstract
 {
+    protected function _sanitizeForServiceUrl($stringItem)
+    {
+        $stringItem     =    str_replace('/', '-s-', $stringItem);
+        $stringItem     =    htmlspecialchars($stringItem);
+        return($stringItem);
+    }
+
+    protected function getData($serviceMethod, $itemId, $format, $options = array())
+    {
+        if ($this->_client) {
+            $itemId     =    $this->_sanitizeForServiceUrl($itemId);
+            $options    =    array_map(array($this, '_sanitizeForServiceUrl'), $options);
+
+            $cacheId    =    $serviceMethod.$itemId.$format;
+            $result     =    $this->getItemFromCache($cacheId);
+            if ($result) {
+                return($this->returnObject($result, $format));
+            } else {
+                $response   =    $this->request($serviceMethod, $format, $options);
+                $result     =    $response->getBody();
+
+                $this->saveItemInCache($result, $cacheId);
+                return($this->_replyToRequest($result, $response, $format));
+            }
+        }
+
+        return($this->returnError('No Client', $format));
+    }
+
     /**
      * Returns a formatted string from the PCMS system
      * that will contain the datamodel for the page id
@@ -31,22 +60,19 @@ class Ocml_Service_Pcms_Model_Rest extends Ocml_Service_Pcms_Model_Abstract
      */
     public function getPage($strPageId, $strFormatType = 'xml')
     {
-        if ($this->_client) {
-            $strPageId  =   str_replace('/', '-s-', $strPageId);
-            $strPageId  =   htmlspecialchars($strPageId);
-
-            $result     =    $this->getItemFromCache($strPageId.$strFormatType);
-            if ($result) {
-                return($this->returnObject($result, $strFormatType));
-            } else {
-                $response   =    $this->request('getPage', $strFormatType, array('{pageid}' => $strPageId));
-            $result     =   $response->getBody();
-
-                $this->saveItemInCache($result, $strPageId.$strFormatType);
-                return($this->_replyToRequest($result, $response, $strFormatType));
-        }
-        }
-        
-        return($this->returnError('No Client', $format));
+        return($this->getData('getPage', $strPageId, $strFormatType, array('{pageid}' => $strPageId)));
     }
+
+    /**
+     * Returns a list of elements that match the given tag.
+     * @param string $strTag
+     * @param string $strFormatType
+     * @return Object
+     * @author donniewa
+     */
+    public function searchTag($strTag, $strFormatType = 'xml')
+    {
+        return($this->getData('searchTag', $strTag, $strFormatType, array('{tag}' => $strTag)));
+    }
+
 }
