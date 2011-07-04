@@ -43,3 +43,17 @@ Add this function to your Zend Framework Bootstrap.php file.
         Zend_Registry::set('PCMS', $service);
         Zend_Registry::set('pcmsCache', $cachePcms);
     }
+    
+You will need a cache-bust for the service to connect to.  Add the following to one of your controllers:
+    public function cacheBustAction()
+    {
+        $this->getResponse()->setHeader('Access-Control-Allow-Origin', '*');
+        $contextHelper  =   $this->_helper->getHelper('ContextSwitch');
+        $contextHelper->addActionContext('cache-bust', 'json')->initContext();
+
+        $cacheObj    =    Zend_Registry::get('pcmsCache');
+        $cacheObj->clean(Zend_Cache::CLEANING_MODE_ALL);
+
+        $this->view->response   =    '200';
+        $this->view->message    =    'Cleared Cache';
+    }

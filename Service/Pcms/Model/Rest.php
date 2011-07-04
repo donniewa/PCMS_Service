@@ -107,4 +107,18 @@ class PCMS_Service_Pcms_Model_Rest extends PCMS_Service_Pcms_Model_Abstract
         );
     }
 
+    /**
+     * Returns a list of the applicable tags
+     * @param string $strModelName
+     * @param string $strFormatType
+     * @return Object
+     * @author donniewa
+     */
+    public function getAllTags($strFormatType = 'xml')
+    {
+        return(
+            $this->getData('getAllTags', '', $strFormatType)
+        );
+    }
+
 }
