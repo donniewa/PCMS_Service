@@ -26,4 +26,5 @@ class PCMS_Service_Pcms_Client_Http extends PCMS_Service_Pcms_Client_Abstract
     public function destroy()
     {
         throw new DomainException('This Class is not setup');
-}}
+    }
+}
