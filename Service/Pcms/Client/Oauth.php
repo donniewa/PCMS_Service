@@ -6,22 +6,22 @@
  * $Revision: $
  * $Change: $
  * $Date: $
- * @package Ocml_Service
+ * @package PCMS_Service
  * @subpackage Pcms
  * @copyright Copyright (c) 2009-2011 Pixelrot Consulting
  *
  **************************************************/
 
 /**
- * 
+ *
  * @author donniewa
  */
-class Ocml_Service_Pcms_Client_Oauth extends Ocml_Service_Pcms_Client_Abstract
+class PCMS_Service_Pcms_Client_Oauth extends PCMS_Service_Pcms_Client_Abstract
 {
     private $_requestCount  =   0;
-    
+
     /**
-     * Returns the oauth client 
+     * Returns the oauth client
      *
      * @return Zend_Oauth_Client
      * @author  donniewa
@@ -63,24 +63,24 @@ class Ocml_Service_Pcms_Client_Oauth extends Ocml_Service_Pcms_Client_Abstract
             }
         }
         }
-        
+
         /**
          * If all else fails, request the token.
          */
         $this->_requestCount++;
-        if ($this->_requestCount == 1) { 
+        if ($this->_requestCount == 1) {
             $this->_requestToken($listClientConfig);
         } else {
             throw new DomainException('Too many requests.');
         }
-        
+
     }
 
     /**
      * Removes all tokens from cache and Session.
      *
      * @return void
-     * @author donniewa 
+     * @author donniewa
      */
     public function destroy()
     {
@@ -121,7 +121,7 @@ class Ocml_Service_Pcms_Client_Oauth extends Ocml_Service_Pcms_Client_Abstract
                 $objToken   =   null;
             }
         }
-        
+
         return ($objToken);
     }
 
@@ -159,7 +159,7 @@ class Ocml_Service_Pcms_Client_Oauth extends Ocml_Service_Pcms_Client_Abstract
                 $objToken   =   null;
             }
         }
-        
+
         return ($objToken);
     }
 
@@ -180,7 +180,7 @@ class Ocml_Service_Pcms_Client_Oauth extends Ocml_Service_Pcms_Client_Abstract
         $objOauth   =   new Zend_Oauth_Consumer($listClientConfig);
         $objToken   =   $objOauth->getRequestToken();
         // persist the token to storage
-        
+
         if ($this->_cache) {
             $this->_cache->save($objToken, 'personalcms_request_token');
         }
@@ -189,12 +189,12 @@ class Ocml_Service_Pcms_Client_Oauth extends Ocml_Service_Pcms_Client_Abstract
         }
         throw new DomainException('No access token.');
     }
-    
+
     /**
      * undocumented function
      *
      * @return void
-     * @author  
+     * @author
      */
     private function _accessToken(array $listClientConfig)
     {
@@ -212,13 +212,13 @@ class Ocml_Service_Pcms_Client_Oauth extends Ocml_Service_Pcms_Client_Abstract
                     return($accessToken);
                 }
             } catch (Exception $e) {
-                /* Make a request for a new Token */ 
+                /* Make a request for a new Token */
                 $this->_requestToken($listClientConfig);
             }
         } else {
             // Mistaken request? Some malfeasant trying something?
             exit('error=OAuth Verification Failed');
         }
-        
+
     }
 }

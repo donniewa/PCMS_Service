@@ -6,23 +6,23 @@
  * $Revision: $
  * $Change: $
  * $Date: $
- * @package Ocml_Service
+ * @package PCMS_Service
  * @subpackage Pcms
  * @copyright Copyright (c) 2009-2011 Pixelrot Consulting
  *
  **************************************************/
 
 /**
- * 
+ *
  * @author donniewa
  */
-abstract class Ocml_Service_Pcms_Model_Abstract implements Ocml_Service_Pcms_Model 
+abstract class PCMS_Service_Pcms_Model_Abstract implements PCMS_Service_Pcms_Model
 {
     protected $_config;
     protected $_client;
     protected $_siteId;
     protected $_cache;
-    
+
     public function __construct(Zend_Config $config, $client, $intSiteId)
     {
         $this->_config      =   $config;
@@ -30,7 +30,7 @@ abstract class Ocml_Service_Pcms_Model_Abstract implements Ocml_Service_Pcms_Mod
         $this->_clientObj   =   $client;
         $this->_siteId      =   $intSiteId;
     }
-    
+
     public function setCache($cacheObj)
     {
         $this->_cache    =    $cacheObj;

@@ -6,7 +6,7 @@
  * $Revision: $
  * $Change: $
  * $Date: $
- * @package Ocml_Service
+ * @package PCMS_Service
  * @subpackage Pcms
  * @copyright Copyright (c) 2009-2011 Pixelrot Consulting
  *
@@ -16,7 +16,7 @@
  *
  * @author donniewa
  */
-class Ocml_Service_Pcms_Model_Rest extends Ocml_Service_Pcms_Model_Abstract
+class PCMS_Service_Pcms_Model_Rest extends PCMS_Service_Pcms_Model_Abstract
 {
     protected function _sanitizeForServiceUrl($stringItem)
     {
