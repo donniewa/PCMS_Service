@@ -143,6 +143,9 @@ abstract class PCMS_Service_Pcms_Model_Abstract implements PCMS_Service_Pcms_Mod
             throw new DomainException('Missing URL Configuration');
         }
         $objReplace['{format}'] = $strFormatType;
+
+        $objReplace    =    array_map('rawurlencode', $objReplace);
+
         $urlPart    =    str_replace(
             array_keys($objReplace), array_values($objReplace), $urls->restUrls->$functionName
         );
