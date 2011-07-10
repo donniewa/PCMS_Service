@@ -70,9 +70,9 @@ class PCMS_Service_Pcms_Model_Rest extends PCMS_Service_Pcms_Model_Abstract
      * @return Object
      * @author donniewa
      */
-    public function searchTag($strTag, $strFormatType = 'xml')
+    public function searchTag($strTag, $strFormatType = 'xml', array $options = array())
     {
-        return($this->getData('searchTag', $strTag, $strFormatType, array('{tag}' => $strTag)));
+        return($this->getData('searchTag', $strTag, $strFormatType, array_merge($options, array('{tag}' => $strTag))));
     }
 
     /**
@@ -98,11 +98,13 @@ class PCMS_Service_Pcms_Model_Rest extends PCMS_Service_Pcms_Model_Abstract
      * @return Object
      * @author donniewa
      */
-    public function getObjectByModelName($strModelName, $strFormatType = 'xml')
+    public function getObjectByModelName($strModelName, $strFormatType = 'xml', array $options = array())
     {
         return(
             $this->getData(
-                'getObjectByModelName', $strModelName, $strFormatType, array('{modelname}' => $strModelName)
+                'getObjectByModelName', $strModelName, $strFormatType, array_merge(
+                    $options, array('{modelname}' => $strModelName)
+                )
             )
         );
     }

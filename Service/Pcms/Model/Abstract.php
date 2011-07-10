@@ -149,6 +149,11 @@ abstract class PCMS_Service_Pcms_Model_Abstract implements PCMS_Service_Pcms_Mod
         $urlPart    =    str_replace(
             array_keys($objReplace), array_values($objReplace), $urls->restUrls->$functionName
         );
+
+        /**
+         * Replace any vars that might be optional
+         */
+        $urlPart    =    preg_replace("'{.*?}'", '', $urlPart);
         $this->_client->setUri($this->_config->rest->serviceuri . $urlPart);
     }
 
