@@ -1,0 +1,51 @@
+{
+    "_base": {
+        "api": {
+            "uri": "http://personalcms.com/rest/configuration/",
+            "headers": {
+                "X-pcms-api-version": "2",
+                "X-pcms-api-siteid": "1"
+            }
+        },
+        "client": {
+            "redirect": false,
+            "oauth": {
+                "siteUrl": "http://personalcms.com/oauth",
+                "callbackUrl": "{your token storage url here}",
+                "consumerKey": "{consumerkey}",
+                "consumerSecret": "{consumersecret}"
+            }
+        }
+    },
+    "production": {
+        "_extends": "_base"
+    },
+    "staging" : {
+        "_extends" : "production",
+        "api": {
+            "uri": "http://staging.personalcms.com/rest/configuration/"
+        },
+        "client": {
+            "redirect": true,
+            "oauth": {
+                "siteUrl": "http://staging.personalcms.com/oauth",
+                "callbackUrl": "http://staging.personalcms.com/oauth/success/"
+            }
+        }
+    },
+    "development": {
+        "_extends": "staging",
+        "client": {
+            "redirect": true
+        }
+    },
+    "test": {
+        "_extends": "_base",
+        "client": {
+            "redirect": true
+        }
+    },
+    "local": {
+        "_extends": "development"
+    }
+}
