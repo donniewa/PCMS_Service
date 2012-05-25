@@ -143,7 +143,10 @@ class PCMS_Service_Client
      */
     protected function _addLogSubscriber(Guzzle\Http\Message\RequestInterface &$request)
     {
-        $logger = Ocml_Core_Log::getLog();
+        $writer = new Zend_Log_Writer_Stream(DATA_PATH . '/logs/guzzle.log');
+        $filter = new Zend_Log_Filter_Priority(Zend_Log::ERR);
+        $writer->addFilter($filter);
+        $logger = new Zend_Log($writer);
         $adapter = new Zf1LogAdapter($logger);
         $logPlugin = new LogPlugin($adapter, LogPlugin::LOG_HEADERS);
         $request->getEventDispatcher()->addSubscriber($logPlugin);
