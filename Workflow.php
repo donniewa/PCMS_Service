@@ -43,6 +43,16 @@ class PCMS_Workflow
     }
 
     /**
+     * Adds the item to the expanded parameter list.  Returns this instance for chainability.
+     * @return PCMS_Workflow
+     */
+    public function autoExpand($listItem)
+    {
+        $this->_uriBuilder->setDefaultParams(array('expand' => $listItem));
+        return $this;
+    }
+
+    /**
      * Will pull the adapter from the client's cache and clean it.
      * @throws Zend_Exception
      * @return bool
@@ -90,10 +100,11 @@ class PCMS_Workflow
             return $memory;
         }
         $result = $this->getClient()->fetch(new PCMS_Service_Directive_Json($this->_config->api->uri));
-        if ($result) {
+        if ($result->getResponse()->isSuccessful()) {
             $this->stashMemory('public-config', $result->services);
             return $result->services;
         }
+        throw new Zend_Exception('Unable to connect.');
     }
 
     public function inMemory($key)

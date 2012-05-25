@@ -6,6 +6,7 @@ use Guzzle\Common\Cache\Zf1CacheAdapter;
 use Guzzle\Common\Event;
 use Guzzle\Common\Log\Zf1LogAdapter;
 use Guzzle\Service\Client;
+use Guzzle\Http\Curl\CurlVersion;
 use Guzzle\Http\Plugin\CachePlugin;
 use Guzzle\Http\Plugin\ExponentialBackoffPlugin;
 use Guzzle\Http\Plugin\LogPlugin;
@@ -70,11 +71,12 @@ class PCMS_Service_Client
     public function getHeaders()
     {
         if (!$this->getHeader("user-agent")) {
+            $curl = CurlVersion::getInstance();
             $this->_defaultHeaders["user-agent"] = sprintf('(PCMS) Public Connector/v.%s (PHP=%s; curl=%s; openssl=%s)',
                 self::VERSION,
                 \PHP_VERSION,
-                Guzzle\Guzzle::getCurlInfo('version'),
-                Guzzle\Guzzle::getCurlInfo('ssl_version')
+                $curl->get('version'),
+                $curl->get('ssl_version')
             );
         }
 
@@ -109,6 +111,13 @@ class PCMS_Service_Client
         if (!empty($postdata)) {
             $headers['content-type'] = 'application/json';
             $body = json_encode($postdata);
+        }
+
+        /**
+         * add a request id here to make sure to force no-cache
+         */
+        if (strtolower($method) !== 'get') {
+            $headers['x-request-id'] = md5(time() . rand(0,999));
         }
         $request = $client->createRequest($method, $uri, $headers, $body);
         // Add cache controls here
@@ -346,13 +355,15 @@ class PCMS_Service_Client
             /**
              * Send the requests. and walk the responses via the directives.
              */
-            $responses = $client->send($requests);
-            array_walk($responses, array($this, '_walkResponses'), $directives);
+            $client->send($requests);
         } catch (ExceptionCollection $e) {
-            foreach ($e as $exception) {
-                $responses[] = $exception->getResponse();
-            }
         }
+
+        $responses = array();
+        foreach ($requests as $result) {
+            $responses[] = $result->getResponse();
+        }
+        array_walk($responses, array($this, '_walkResponses'), $directives);
 
         return $responses;
     }

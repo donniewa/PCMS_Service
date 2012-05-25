@@ -16,6 +16,11 @@ class PCMS_UriBuilder
      */
     protected $_request;
 
+    /**
+     * @var array
+     */
+    protected $_defaultParams = array();
+
     public function __construct(Zend_Controller_Request_Abstract $request, $config)
     {
         $this->_config = $config;
@@ -29,6 +34,24 @@ class PCMS_UriBuilder
     public function getRequest()
     {
         return $this->_request;
+    }
+
+    /**
+     * Sets & overwrites the default params added to the url
+     * @param array $params
+     */
+    public function setDefaultParams(array $params)
+    {
+        $this->_defaultParams = $params;
+    }
+
+    /**
+     * returns the default params added to the url
+     * @return array $params
+     */
+    public function getDefaultParams()
+    {
+        return $this->_defaultParams;
     }
 
     /**
@@ -67,6 +90,8 @@ class PCMS_UriBuilder
             $uri = $base . $lookup;
         }
 
+        $parameters = array_merge($this->getDefaultParams(), $parameters);
+
         $uri = $this->doReplacements($uri, $replacements);
         $uri = $this->addParameters($uri, $parameters, $addExistingParams);
 
@@ -81,8 +106,7 @@ class PCMS_UriBuilder
      * @param string $name
      * @param boolean $reset
      */
-    public function getHost($appendUrl = false, array $urlOptions = array(), $name = null, $reset = false
-    )
+    public function getHost($appendUrl = false, array $urlOptions = array(), $name = null, $reset = false)
     {
         $server = $this->_request->getServer();
         $host = $server['HTTP_HOST'];

@@ -117,10 +117,10 @@ class PCMS_Service_Fetch
      * @param String $linkName
      * @param String $className
      */
-    public function fetchMultiple(&$models, $linkName, $className = self::DEFAULT_CLASS) {
+    public function fetchMultiple(&$models, $linkName = 'self', $className = self::DEFAULT_CLASS) {
         $directives = array();
         foreach ($models as $instance) {
-            $directives[] = $this->_createDirective($instance, 'self', $className);
+            $directives[] = $this->_createDirective($instance, $linkName, $className);
         }
 
         $models = $this->getClient()->fetch($directives);

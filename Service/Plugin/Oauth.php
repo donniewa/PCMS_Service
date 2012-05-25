@@ -60,7 +60,7 @@ class PCMS_Service_Plugin_Oauth
         );
 
         $oauthRequest = OAuthRequest::from_consumer_and_token(
-            $consumer, NULL, $this->_config['requestMethod'], "{$baseUrl}/request_token/"
+            $consumer, NULL, 'GET', "{$baseUrl}/request_token/"
             ,array('oauth_callback' => $this->_config['callbackUrl'])
         );
         $oauthRequest->sign_request(new $signatureMethod, $consumer, null);
@@ -110,7 +110,7 @@ class PCMS_Service_Plugin_Oauth
         );
 
         $oauthRequest = OAuthRequest::from_consumer_and_token(
-            $consumer, $request, $this->_config['requestMethod'], "{$baseUrl}/access_token/"
+            $consumer, $request, 'GET', "{$baseUrl}/access_token/"
             ,array('oauth_callback' => $this->_config['callbackUrl'])
         );
         $oauthRequest->sign_request(new $signatureMethod, $consumer, $request);
@@ -165,8 +165,7 @@ class PCMS_Service_Plugin_Oauth
             }
 
             $this->_storeTokenCache('request', $token);
-
-            if ($this->_config['client']['redirect'] === true || $this->_forceRedirect() === true) {
+            if ($this->_config['redirect'] === true || $this->_forceRedirect() === true) {
                 $oauthVars = array(
                     'oauth_token' => $token->key
                 );
